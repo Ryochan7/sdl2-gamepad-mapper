@@ -482,7 +482,8 @@ Window {
     Component.onCompleted:
     {
         logTxtArea.text = "";
-        var logMessage = String("SDL2 Gamepad Mapper (%1)").arg(viewBackend.generateSDLVersionText());
+        var logMessage = String("SDL2 Gamepad Mapper %1 (%2)").arg(viewBackend.progVersion)
+            .arg(viewBackend.generateSDLVersionText());
         logger.log(logMessage);
         logger.log("");
         logger.log(qsTr("Scan for controllers"));

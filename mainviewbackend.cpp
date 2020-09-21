@@ -19,6 +19,7 @@
 #include "joysticksdl.h"
 
 static const char* SDL_ENVVAR_NAME = "SDL_GAMECONTROLLERCONFIG";
+QString MainViewBackend::PROGRAM_VERSION = "0.0.1";
 
 MainViewBackend::MainViewBackend(QObject *parent) : QObject(parent)
 {

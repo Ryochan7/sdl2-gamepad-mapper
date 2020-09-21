@@ -12,6 +12,7 @@ class MainViewBackend : public QObject
     Q_PROPERTY(SDL2MapperBackend* mapperBack MEMBER mapperBackend)
     Q_PROPERTY(bool hasSDLEnvVar MEMBER sdlGCEnvVar NOTIFY sdlGCEnvVarChanged)
     Q_PROPERTY(JoystickContainerModel* joyComboModel READ getJoyComboModel NOTIFY joyComboModelChanged)
+    Q_PROPERTY(QString progVersion MEMBER PROGRAM_VERSION CONSTANT)
 
 public:
     explicit MainViewBackend(QObject *parent = nullptr);
@@ -26,6 +27,8 @@ public:
     Q_INVOKABLE QString generateGUIDStringDetails(JoystickSDL* joyDev);
     Q_INVOKABLE bool hasGameControllerEnvvar();
     Q_INVOKABLE QString generateSDLVersionText();
+
+    static QString PROGRAM_VERSION;
 
 private:
     void checkForEnvvar();
