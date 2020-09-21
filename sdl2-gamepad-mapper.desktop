@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=SDL2 Gamepad Mapper
+Comment=Generate SDL2 Controller mapping strings
+Exec=sdl2-gamepad-mapper
+Type=Application
+Icon=sdl2-gamepad-mapper
+Categories=Utility;
+
