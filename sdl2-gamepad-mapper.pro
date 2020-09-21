@@ -61,8 +61,8 @@ HEADERS += \
 win32: LIBS += -L$$PWD/SDL2/lib/ -llibSDL2.dll
 else: LIBS += -lSDL2
 
-windows: INCLUDEPATH += $$PWD/SDL2/include
-windows: DEPENDPATH += $$PWD/SDL2/include
+win32: INCLUDEPATH += $$PWD/SDL2/include
+win32: DEPENDPATH += $$PWD/SDL2/include
 
 DISTFILES += \
     images/axis.png \
