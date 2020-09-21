@@ -55,3 +55,7 @@ compile_commands.json
 
 # Include current local SDL2 dev folder
 SDL2/
+
+# Include build folder
+build/
+
