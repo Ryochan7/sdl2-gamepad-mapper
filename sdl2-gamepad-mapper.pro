@@ -31,7 +31,7 @@ RESOURCES += qml.qrc \
     resources.qrc
 
 TRANSLATIONS += \
-    SDL2Delv_en_US.ts
+    sdl2-gamepad-mapper_en_US.ts
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -41,7 +41,8 @@ QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
+#else: unix:!android: target.path = /opt/$${TARGET}/bin
+else: unix:!android: target.path = /usr/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
@@ -60,8 +61,8 @@ HEADERS += \
 win32: LIBS += -L$$PWD/SDL2/lib/ -llibSDL2.dll
 else: LIBS += -lSDL2
 
-INCLUDEPATH += $$PWD/SDL2/include
-DEPENDPATH += $$PWD/SDL2/include
+windows: INCLUDEPATH += $$PWD/SDL2/include
+windows: DEPENDPATH += $$PWD/SDL2/include
 
 DISTFILES += \
     images/axis.png \
