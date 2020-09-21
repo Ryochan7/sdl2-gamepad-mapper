@@ -125,9 +125,9 @@ Window {
                                 var tempString = mappingDisplayItem.getGCMapping();
                                 var result = joypad.setMappingString(tempString);
                                 joypad.refreshGameController();
-                                //logger.log(qsTr("Saved Mapping"));
                                 var logMessage = qsTr("Mapping string: %1").arg(tempString);
                                 viewBackend.writeMappingString(tempString);
+                                logger.log(logMessage);
                                 viewBackend.joyComboModel.refreshItem(index);
                             }
 
@@ -466,7 +466,7 @@ Window {
 
                 MouseArea
                 {
-                    anchors.fill: parent
+                    anchors.fill: logTxtArea
                     enabled: false
                     cursorShape: Qt.IBeamCursor
                 }
