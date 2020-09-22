@@ -511,7 +511,7 @@ Window {
                 if (joypad !== undefined)
                 {
                     logMessage = String("\"%1\", %2 %3").arg(joypad.gameMappedName)
-                        .arg(joypad.GUID).arg(joypad.isGameController ? qsTr("(mapping available)") : qsTr(""));
+                        .arg(joypad.GUID).arg(joypad.isGameController ? qsTr("(mapping available)") : "");
                     logger.log(logMessage);
                 }
             }
