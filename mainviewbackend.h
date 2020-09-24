@@ -2,6 +2,7 @@
 #define MAINVIEWBACKEND_H
 
 #include <QObject>
+#include <QNetworkAccessManager>
 
 #include "sdl2mapperbackend.h"
 #include "joystickcontainermodel.h"
@@ -13,6 +14,7 @@ class MainViewBackend : public QObject
     Q_PROPERTY(bool hasSDLEnvVar MEMBER sdlGCEnvVar NOTIFY sdlGCEnvVarChanged)
     Q_PROPERTY(JoystickContainerModel* joyComboModel READ getJoyComboModel NOTIFY joyComboModelChanged)
     Q_PROPERTY(QString progVersion MEMBER PROGRAM_VERSION CONSTANT)
+    Q_PROPERTY(QString errorString MEMBER m_errorString CONSTANT)
 
 public:
     explicit MainViewBackend(QObject *parent = nullptr);
@@ -27,19 +29,29 @@ public:
     Q_INVOKABLE QString generateGUIDStringDetails(JoystickSDL* joyDev);
     Q_INVOKABLE bool hasGameControllerEnvvar();
     Q_INVOKABLE QString generateSDLVersionText();
+    Q_INVOKABLE bool checkLatestMappingFile();
+    Q_INVOKABLE void requestLatestMappingFile();
 
     static QString PROGRAM_VERSION;
 
 private:
     void checkForEnvvar();
+    //void remoteMappingCheckReplyFinished(QNetworkReply *reply);
 
     SDL2MapperBackend* mapperBackend;
     bool sdlGCEnvVar;
     JoystickContainerModel* joyContainer;
+    QNetworkAccessManager* manager;
+    QString m_errorString;
 
 signals:
     void sdlGCEnvVarChanged();
     void joyComboModelChanged();
+    void upstreamMappingCheckFinished();
+
+private slots:
+    //void remoteMappingHeaderReplyFinished();
+    void remoteMappingCheckReplyFinished();
 };
 
 #endif // MAINVIEWBACKEND_H

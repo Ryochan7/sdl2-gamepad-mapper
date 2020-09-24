@@ -30,10 +30,6 @@ int main(int argc, char *argv[])
     app.setOrganizationName("AutismPowered");
     app.setApplicationName("SDL2GameControllerMapper");
 
-    //QSettings settings;
-    //settings.setValue("EasterNigga", "Wasting Yo Time");
-    //qDebug() << "KJLDLKJDFSLKJ " << settings.fileName();
-
     QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir dir;
     if (!dir.exists(appDataPath))
@@ -41,18 +37,25 @@ int main(int argc, char *argv[])
         dir.mkpath(appDataPath);
     }
 
+    /*
     // Attempt to read base Game Controller mappings files
     QStringList tempList(QCoreApplication::applicationDirPath());
     //QStringList tempList(appDataPath);
     tempList.append("gamecontrollerdb.txt");
-    QString testMappingPath = QFileInfo(tempList.join("/")).canonicalFilePath();
-    SDL_GameControllerAddMappingsFromFile(testMappingPath.toStdString().c_str());
+    QString testMappingPath = QFileInfo(tempList.join("/")).absoluteFilePath();
+
+    if (QFileInfo::exists(testMappingPath))
+    {
+        SDL_GameControllerAddMappingsFromFile(testMappingPath.toStdString().c_str());
+    }
+    */
 
     // Attempt to read user generated Game Controller mappings file
-    tempList.clear();
-    tempList.append(appDataPath);
+    QStringList tempList(appDataPath);
+    //tempList.clear();
+    //tempList.append(appDataPath);
     tempList.append("gamecontrollerdb.local.txt");
-    testMappingPath = QFileInfo(tempList.join("/")).canonicalFilePath();
+    QString testMappingPath = QFileInfo(tempList.join("/")).absoluteFilePath();
     SDL_GameControllerAddMappingsFromFile(testMappingPath.toStdString().c_str());
     //qDebug() << "APPDATA PATH: " << appDataPath;
 

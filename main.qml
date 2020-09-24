@@ -479,19 +479,14 @@ Window {
         }
     }
 
-    Component.onCompleted:
+    function prepareSession()
     {
-        logTxtArea.text = "";
-        var logMessage = String("SDL2 Gamepad Mapper %1 (%2)").arg(viewBackend.progVersion)
-            .arg(viewBackend.generateSDLVersionText());
-        logger.log(logMessage);
-        logger.log("");
         logger.log(qsTr("Scan for controllers"));
 
         backend.start();
         viewBackend.createJoyComboModel();
         var numPads = backend.reader.joypadContainer.numPads;
-        logMessage = qsTr("Found %0 gamepad(s)").arg(numPads);
+        var logMessage = qsTr("Found %0 gamepad(s)").arg(numPads);
         logger.log(logMessage);
 
         if (numPads > 0)
@@ -533,6 +528,32 @@ Window {
 
         //mappingDisplayItem.mappingActive = true;
         //mappingDisplayItem.setHighlightButton(0);
+
+        viewBackend.upstreamMappingCheckFinished.disconnect(prepareSession);
+        mainColLayout.enabled = true;
+    }
+
+    Component.onCompleted:
+    {
+        logTxtArea.text = "";
+        var logMessage = String("SDL2 Gamepad Mapper %1 (%2)").arg(viewBackend.progVersion)
+            .arg(viewBackend.generateSDLVersionText());
+        logger.log(logMessage);
+        logger.log("");
+
+        var fetchRemote = viewBackend.checkLatestMappingFile();
+        if (fetchRemote)
+        {
+            logger.log("Checking for latest GameController mapping file");
+
+            mainColLayout.enabled = false;
+            viewBackend.upstreamMappingCheckFinished.connect(prepareSession);
+            viewBackend.requestLatestMappingFile();
+        }
+        else
+        {
+            prepareSession();
+        }
     }
 
     Component.onDestruction:

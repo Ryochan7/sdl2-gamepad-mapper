@@ -7,6 +7,9 @@
 #include <QDir>
 #include <QTextStream>
 #include <QSettings>
+#include <QUrl>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
 #ifdef Q_OS_WINDOWS
 #include <windows.h>
@@ -21,9 +24,12 @@
 static const char* SDL_ENVVAR_NAME = "SDL_GAMECONTROLLERCONFIG";
 QString MainViewBackend::PROGRAM_VERSION = "0.0.1";
 
+static const char* upstreamGameControllerDBUrl ="https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt";
+
 MainViewBackend::MainViewBackend(QObject *parent) : QObject(parent)
 {
     sdlGCEnvVar = false;
+    manager = new QNetworkAccessManager(this);
 
     checkForEnvvar();
 }
@@ -173,4 +179,72 @@ QString MainViewBackend::generateSDLVersionText()
 
     versionText = versionText.arg(compiledVersionText).arg(dllVersionText);
     return versionText;
+}
+
+bool MainViewBackend::checkLatestMappingFile()
+{
+    bool result = false;
+
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QStringList tempList(appDataPath);
+    tempList.append("gamecontrollerdb.txt");
+    QString localMappingPath = QFileInfo(tempList.join("/")).absoluteFilePath();
+
+    bool fetchRemote = false;
+    if (!QFile::exists(localMappingPath))
+    {
+        fetchRemote = true;
+    }
+    else
+    {
+        QFileInfo tempInfo = QFileInfo(localMappingPath);
+        if (QDateTime::currentDateTime() > tempInfo.lastModified().addDays(1))
+        {
+            fetchRemote = true;
+        }
+    }
+
+    if (fetchRemote)
+    {
+        result = true;
+    }
+
+    return result;
+}
+
+void MainViewBackend::requestLatestMappingFile()
+{
+    QUrl controllerDbURL(upstreamGameControllerDBUrl);
+    QNetworkRequest request(controllerDbURL);
+    QNetworkReply *reply = manager->get(request);
+    connect(reply, &QNetworkReply::finished, this, &MainViewBackend::remoteMappingCheckReplyFinished);
+}
+
+void MainViewBackend::remoteMappingCheckReplyFinished()
+{
+    QNetworkReply *reply = static_cast<QNetworkReply*>(sender());
+    m_errorString = reply->errorString();
+    if (reply->error() == QNetworkReply::NoError)
+    {
+        QString khantent = reply->readAll();
+
+        QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        QStringList tempList(appDataPath);
+        tempList.append("gamecontrollerdb.txt");
+        QFileInfo tempInfo = QFileInfo(tempList.join("/"));
+        QString localMappingPath = tempInfo.absoluteFilePath();
+
+        QFile tempFile(localMappingPath);
+        tempFile.open(QIODevice::WriteOnly | QIODevice::Text);
+
+        QTextStream stream(&tempFile);
+        stream << khantent << endl;
+        stream.flush();
+
+        tempFile.close();
+
+        reply->close();
+    }
+
+    emit upstreamMappingCheckFinished();
 }
