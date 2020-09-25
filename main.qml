@@ -98,7 +98,7 @@ Window {
                                 var result = "";
                                 var index = deviceCombo.currentIndex;
                                 var joypad = backend.reader.joypadContainer.getJoystick(index);
-                                if (joypad !== undefined)
+                                if (joypad !== null)
                                 {
                                     result = joypad.gameContDevName;
                                 }
@@ -119,7 +119,7 @@ Window {
                         onAccepted: {
                             var index = deviceCombo.currentIndex;
                             var joypad = backend.reader.joypadContainer.getJoystick(index);
-                            if (joypad !== undefined)
+                            if (joypad !== null)
                             {
                                 joypad.gameMappedName = mappingNameTxt.text
                                 var tempString = mappingDisplayItem.getGCMapping();
@@ -221,7 +221,7 @@ Window {
                 if (index >= 0)
                 {
                     var joypad = backend.reader.joypadContainer.getJoystick(index);
-                    if (joypad !== undefined)
+                    if (joypad !== null)
                     {
                         mappingDisplayItem.setJoyDevice(joypad);
                         displayMappedItem.setJoyDevice(joypad);
@@ -319,15 +319,18 @@ Window {
                     onClicked: {
                         var index = deviceCombo.currentIndex;
                         var joypad = backend.reader.joypadContainer.getJoystick(index);
-                        var guid = backend.reader.joypadContainer.getJoystick(index).GUID;
-                        var msgDialog = msgDialogComp.createObject(rootWindow);
-                        msgDialog.text = msgDialogStrings.copyGUIDText.arg(joypad.gameContDevName);
-                        msgDialog.open();
-                        viewBackend.copyGUIDToClipboard(guid);
-                        //logger.log(msgDialogStrings.copyGUIDText.arg(joypad.gameContDevName));
-                        var logString = qsTr("The GUID for \"%1\" is \"%2\"").arg(joypad.gameMappedName).arg(joypad.GUID);
-                        logger.log(logString);
-                        //logger.log(viewBackend.generateGUIDStringDetails(joypad));
+                        if (joypad !== null)
+                        {
+                            var guid = backend.reader.joypadContainer.getJoystick(index).GUID;
+                            var msgDialog = msgDialogComp.createObject(rootWindow);
+                            msgDialog.text = msgDialogStrings.copyGUIDText.arg(joypad.gameContDevName);
+                            msgDialog.open();
+                            viewBackend.copyGUIDToClipboard(guid);
+                            //logger.log(msgDialogStrings.copyGUIDText.arg(joypad.gameContDevName));
+                            var logString = qsTr("The GUID for \"%1\" is \"%2\"").arg(joypad.gameMappedName).arg(joypad.GUID);
+                            logger.log(logString);
+                            //logger.log(viewBackend.generateGUIDStringDetails(joypad));
+                        }
                     }
                 }
 
@@ -336,7 +339,12 @@ Window {
                     Layout.fillWidth: true
                     text: qsTr("Create A New Mapping")
                     onClicked: {
-                        createMappingDialog.open();
+                        var index = deviceCombo.currentIndex;
+                        var joypad = backend.reader.joypadContainer.getJoystick(index);
+                        if (joypad !== null)
+                        {
+                            createMappingDialog.open();
+                        }
                     }
                 }
 
@@ -347,8 +355,7 @@ Window {
                     onClicked: {
                         var index = deviceCombo.currentIndex;
                         var joypad = backend.reader.joypadContainer.getJoystick(index);
-                        var temp = index >= 0 ?
-                                    backend.reader.joypadContainer.getJoystick(index).gameContMapping : ""
+                        var temp = joypad !== null ? joypad.gameContMapping : ""
 
                         if (temp !== "")
                         {
@@ -422,7 +429,7 @@ Window {
                 onClicked: {
                     var index = deviceCombo.currentIndex;
                     var joypad = backend.reader.joypadContainer.getJoystick(index);
-                    if (joypad !== undefined && joypad.isGameController)
+                    if (joypad !== null && joypad.isGameController)
                     {
                         viewBackend.createMappingEnvvar(joypad.gameContMapping);
                         var logMessage = qsTr("Setting environmental variable \"SDL_GAMECONTROLLERCONFIG\" to \"%1\"")
@@ -503,7 +510,7 @@ Window {
             for (var i = 0; i < numPads; i++)
             {
                 var joypad = backend.reader.joypadContainer.getJoystick(i);
-                if (joypad !== undefined)
+                if (joypad !== null)
                 {
                     logMessage = String("\"%1\", %2 %3").arg(joypad.gameMappedName)
                         .arg(joypad.GUID).arg(joypad.isGameController ? qsTr("(mapping available)") : "");
