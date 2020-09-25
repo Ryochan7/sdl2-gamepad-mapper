@@ -548,7 +548,8 @@ Window {
 
             mainColLayout.enabled = false;
             viewBackend.upstreamMappingCheckFinished.connect(prepareSession);
-            viewBackend.requestLatestMappingFile();
+            viewBackend.requestLatestMappingInfo();
+            //viewBackend.requestLatestMappingFile();
         }
         else
         {

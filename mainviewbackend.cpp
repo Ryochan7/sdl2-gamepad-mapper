@@ -10,6 +10,9 @@
 #include <QUrl>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 #ifdef Q_OS_WINDOWS
 #include <windows.h>
@@ -25,6 +28,7 @@ static const char* SDL_ENVVAR_NAME = "SDL_GAMECONTROLLERCONFIG";
 QString MainViewBackend::PROGRAM_VERSION = "0.0.1";
 
 static const char* upstreamGameControllerDBUrl ="https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt";
+static const char* upstreamGameControllerAPICommitCheck = "https://api.github.com/repos/gabomdq/SDL_GameControllerDB/commits?path=gamecontrollerdb.txt&page=1&per_page=1";
 
 MainViewBackend::MainViewBackend(QObject *parent) : QObject(parent)
 {
@@ -212,12 +216,61 @@ bool MainViewBackend::checkLatestMappingFile()
     return result;
 }
 
+void MainViewBackend::requestLatestMappingInfo()
+{
+    QUrl controllerDBAPICall(upstreamGameControllerAPICommitCheck);
+    QNetworkRequest request(controllerDBAPICall);
+    QNetworkReply *reply = manager->get(request);
+    connect(reply, &QNetworkReply::finished, this, &MainViewBackend::remoteMappingAPICallReplyFinished);
+}
+
 void MainViewBackend::requestLatestMappingFile()
 {
     QUrl controllerDbURL(upstreamGameControllerDBUrl);
     QNetworkRequest request(controllerDbURL);
     QNetworkReply *reply = manager->get(request);
     connect(reply, &QNetworkReply::finished, this, &MainViewBackend::remoteMappingCheckReplyFinished);
+}
+
+void MainViewBackend::remoteMappingAPICallReplyFinished()
+{
+    QNetworkReply *reply = static_cast<QNetworkReply*>(sender());
+    m_errorString = reply->errorString();
+    if (reply->error() == QNetworkReply::NoError)
+    {
+        QString khantent = reply->readAll();
+        QByteArray tempBytes = khantent.toUtf8();
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(tempBytes);
+        QJsonArray jsonArray = jsonDoc.array();
+
+        QJsonObject jsonObj = jsonArray[0].toObject();
+        QVariantMap rootMap = jsonObj.toVariantMap();
+        QVariant shitval = jsonObj.value("commit").toObject().value("committer").toObject().value("date").toVariant();
+        if (!shitval.isNull())
+        {
+            QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+            QStringList tempList(appDataPath);
+            tempList.append("gamecontrollerdb.txt");
+            QString localMappingPath = QFileInfo(tempList.join("/")).absoluteFilePath();
+
+            QDateTime lastDateTime = shitval.toDateTime();
+            QFileInfo tempInfo = QFileInfo(localMappingPath);
+            if (lastDateTime > tempInfo.lastModified())
+            {
+                requestLatestMappingFile();
+            }
+            else
+            {
+                emit upstreamMappingCheckFinished();
+            }
+        }
+
+        //QDateTime lastDateTime = jsonObj.value("commit").toObject().value("committer").toObject().value("date").toVariant().toDateTime();
+    }
+    else
+    {
+        emit upstreamMappingCheckFinished();
+    }
 }
 
 void MainViewBackend::remoteMappingCheckReplyFinished()

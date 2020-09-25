@@ -30,6 +30,7 @@ public:
     Q_INVOKABLE bool hasGameControllerEnvvar();
     Q_INVOKABLE QString generateSDLVersionText();
     Q_INVOKABLE bool checkLatestMappingFile();
+    Q_INVOKABLE void requestLatestMappingInfo();
     Q_INVOKABLE void requestLatestMappingFile();
 
     static QString PROGRAM_VERSION;
@@ -48,10 +49,12 @@ signals:
     void sdlGCEnvVarChanged();
     void joyComboModelChanged();
     void upstreamMappingCheckFinished();
+    void remoteMappingCheckFinished();
 
 private slots:
     //void remoteMappingHeaderReplyFinished();
     void remoteMappingCheckReplyFinished();
+    void remoteMappingAPICallReplyFinished();
 };
 
 #endif // MAINVIEWBACKEND_H
