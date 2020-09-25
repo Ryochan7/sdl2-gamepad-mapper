@@ -246,29 +246,36 @@ void MainViewBackend::remoteMappingAPICallReplyFinished()
         QJsonDocument jsonDoc = QJsonDocument::fromJson(tempBytes);
         QJsonArray jsonArray = jsonDoc.array();
 
-        QJsonObject jsonObj = jsonArray[0].toObject();
-        QVariantMap rootMap = jsonObj.toVariantMap();
-        QVariant shitval = jsonObj.value("commit").toObject().value("committer").toObject().value("date").toVariant();
-        if (!shitval.isNull())
+        if (jsonArray.count() > 0)
         {
-            QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-            QStringList tempList(appDataPath);
-            tempList.append("gamecontrollerdb.txt");
-            QString localMappingPath = QFileInfo(tempList.join("/")).absoluteFilePath();
+            QJsonObject jsonObj = jsonArray[0].toObject();
+            QVariantMap rootMap = jsonObj.toVariantMap();
+            QVariant dateVariant = jsonObj.value("commit").toObject().value("committer").toObject().value("date").toVariant();
+            if (!dateVariant.isNull())
+            {
+                QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+                QStringList tempList(appDataPath);
+                tempList.append("gamecontrollerdb.txt");
+                QString localMappingPath = QFileInfo(tempList.join("/")).absoluteFilePath();
 
-            QDateTime lastDateTime = shitval.toDateTime();
-            QFileInfo tempInfo = QFileInfo(localMappingPath);
-            if (lastDateTime > tempInfo.lastModified())
-            {
-                requestLatestMappingFile();
-            }
-            else
-            {
-                emit upstreamMappingCheckFinished();
+                QDateTime lastDateTime = dateVariant.toDateTime();
+                QFileInfo tempInfo = QFileInfo(localMappingPath);
+                if (lastDateTime > tempInfo.lastModified())
+                {
+                    requestLatestMappingFile();
+                }
+                else
+                {
+                    emit upstreamMappingCheckFinished();
+                }
             }
         }
+        else
+        {
+            m_errorString = tr("JSON Parsing Failed");
+            emit upstreamMappingCheckFinished();
+        }
 
-        //QDateTime lastDateTime = jsonObj.value("commit").toObject().value("committer").toObject().value("date").toVariant().toDateTime();
     }
     else
     {
