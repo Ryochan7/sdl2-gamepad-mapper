@@ -193,6 +193,9 @@ bool MainViewBackend::checkLatestMappingFile()
     QStringList tempList(appDataPath);
     tempList.append("gamecontrollerdb.txt");
     QString localMappingPath = QFileInfo(tempList.join("/")).absoluteFilePath();
+    QSettings appSettings(QString("%1/%2").arg(appDataPath).arg("settings.ini"), QSettings::IniFormat);
+    QDateTime lastModified = appSettings.value("remoteMappingLastChecked",
+                                                   QDateTime::currentDateTime().addDays(-2)).toDateTime();
 
     bool fetchRemote = false;
     if (!QFile::exists(localMappingPath))
@@ -201,8 +204,7 @@ bool MainViewBackend::checkLatestMappingFile()
     }
     else
     {
-        QFileInfo tempInfo = QFileInfo(localMappingPath);
-        if (QDateTime::currentDateTime() > tempInfo.lastModified().addDays(1))
+        if (QDateTime::currentDateTime() > lastModified.addDays(1))
         {
             fetchRemote = true;
         }
@@ -211,6 +213,7 @@ bool MainViewBackend::checkLatestMappingFile()
     if (fetchRemote)
     {
         result = true;
+        appSettings.setValue("remoteMappingLastChecked", QDateTime::currentDateTime());
     }
 
     return result;
