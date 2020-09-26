@@ -311,3 +311,38 @@ void MainViewBackend::remoteMappingCheckReplyFinished()
 
     emit upstreamMappingCheckFinished();
 }
+
+void MainViewBackend::loadExistingMappingFiles()
+{
+    attemptReadMainMappingFile();
+    attemptReadLocalMappingFile();
+}
+
+void MainViewBackend::attemptReadMainMappingFile()
+{
+    // Attempt to read base Game Controller mappings files
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QStringList tempMainList(appDataPath);
+    tempMainList.append("gamecontrollerdb.txt");
+    QString testMappingPath = QFileInfo(tempMainList.join("/")).absoluteFilePath();
+
+    if (QFileInfo::exists(testMappingPath))
+    {
+        SDL_GameControllerAddMappingsFromFile(testMappingPath.toStdString().c_str());
+    }
+}
+
+void MainViewBackend::attemptReadLocalMappingFile()
+{
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    // Attempt to read user generated Game Controller mappings file
+    QStringList tempList(appDataPath);
+    tempList.append("gamecontrollerdb.local.txt");
+    QString testMappingPath = QFileInfo(tempList.join("/")).absoluteFilePath();
+    SDL_GameControllerAddMappingsFromFile(testMappingPath.toStdString().c_str());
+
+    if (QFileInfo::exists(testMappingPath))
+    {
+        SDL_GameControllerAddMappingsFromFile(testMappingPath.toStdString().c_str());
+    }
+}

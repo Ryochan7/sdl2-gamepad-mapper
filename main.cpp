@@ -37,28 +37,6 @@ int main(int argc, char *argv[])
         dir.mkpath(appDataPath);
     }
 
-    /*
-    // Attempt to read base Game Controller mappings files
-    QStringList tempList(QCoreApplication::applicationDirPath());
-    //QStringList tempList(appDataPath);
-    tempList.append("gamecontrollerdb.txt");
-    QString testMappingPath = QFileInfo(tempList.join("/")).absoluteFilePath();
-
-    if (QFileInfo::exists(testMappingPath))
-    {
-        SDL_GameControllerAddMappingsFromFile(testMappingPath.toStdString().c_str());
-    }
-    */
-
-    // Attempt to read user generated Game Controller mappings file
-    QStringList tempList(appDataPath);
-    //tempList.clear();
-    //tempList.append(appDataPath);
-    tempList.append("gamecontrollerdb.local.txt");
-    QString testMappingPath = QFileInfo(tempList.join("/")).absoluteFilePath();
-    SDL_GameControllerAddMappingsFromFile(testMappingPath.toStdString().c_str());
-    //qDebug() << "APPDATA PATH: " << appDataPath;
-
     QString appStyle = QQuickStyle::name();
     //qDebug() << "APP STYLE: " << appStyle;
     if (appStyle.isEmpty())

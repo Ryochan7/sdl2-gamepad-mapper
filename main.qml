@@ -488,6 +488,9 @@ Window {
 
     function prepareSession()
     {
+        logger.log(qsTr("Loading any existing mappings into SDL"));
+        viewBackend.loadExistingMappingFiles();
+
         logger.log(qsTr("Scan for controllers"));
 
         backend.start();

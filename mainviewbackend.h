@@ -32,12 +32,15 @@ public:
     Q_INVOKABLE bool checkLatestMappingFile();
     Q_INVOKABLE void requestLatestMappingInfo();
     Q_INVOKABLE void requestLatestMappingFile();
+    Q_INVOKABLE void loadExistingMappingFiles();
 
     static QString PROGRAM_VERSION;
 
 private:
     void checkForEnvvar();
     //void remoteMappingCheckReplyFinished(QNetworkReply *reply);
+    void attemptReadMainMappingFile();
+    void attemptReadLocalMappingFile();
 
     SDL2MapperBackend* mapperBackend;
     bool sdlGCEnvVar;
