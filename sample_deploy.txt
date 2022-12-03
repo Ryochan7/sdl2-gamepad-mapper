@@ -1,1 +1,1 @@
-PATH="<QtDir/bin>:$PATH" linuxdeployqt-continuous-x86_64.AppImage "<app-bin>" -qmldir="<qml-source-dir>" -appimage -unsupported-allow-new-glibc
+PATH="<QtDir>/bin:$PATH" linuxdeployqt-continuous-x86_64.AppImage "<app-bin>" -qmldir="<qml-source-dir>" -appimage -unsupported-allow-new-glibc
