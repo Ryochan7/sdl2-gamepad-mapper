@@ -59,3 +59,8 @@ SDL2/
 # Include build folder
 build/
 
+
+## Custom
+AppImage/
+*.AppImage
+
