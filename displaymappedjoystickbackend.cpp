@@ -127,6 +127,16 @@ void DisplayMappedJoystickBackend::handleAxisEvent(int index, int value)
     }
 }
 
+int DisplayMappedJoystickBackend::getSDLMaxButtons()
+{
+    return SDL_CONTROLLER_BUTTON_MAX;
+}
+
+int DisplayMappedJoystickBackend::getSDLMaxAxes()
+{
+    return SDL_CONTROLLER_AXIS_MAX;
+}
+
 DisplayMappedJoystickBackend::~DisplayMappedJoystickBackend()
 {
     QListIterator<ControllerAxisInfo*> iter(controllerAxisStates);

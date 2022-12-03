@@ -88,6 +88,12 @@ Rectangle {
             // SDL_CONTROLLER_BUTTON_DPAD_RIGHT
             highlightInfo.append({x: 109, y: 127, width: privateData.buttonHighlight.width, height: privateData.buttonHighlight.height, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source});
 
+            // Add empty entries for possible unknown buttons
+            for (var i = highlightInfo.count; i < displayMappedJoyBackend.sdlMaxButtons; i++)
+            {
+                highlightInfo.append({x: 0, y: 0, width: 0, height: 0, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source})
+            }
+
             // SDL_CONTROLLER_AXIS_LEFTX-
             highlightInfo.append({x: 15, y: 89, width: privateData.axisLeftHighlight.width, height: privateData.axisLeftHighlight.height, buttonType: privateData.axisXType, source: privateData.axisLeftHighlight.source});
             // SDL_CONTROLLER_AXIS_LEFTX+
@@ -109,6 +115,12 @@ Rectangle {
             highlightInfo.append({x: 53, y: 0, width: privateData.buttonHighlight.width, height: privateData.buttonHighlight.height, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source});
             // SDL_CONTROLLER_AXIS_TRIGGERRIGHT
             highlightInfo.append({x: 220, y: 0, width: privateData.buttonHighlight.width, height: privateData.buttonHighlight.height, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source});
+
+            // Add empty entries for possible unknown axes
+            for (var j = highlightInfo.count; i < (displayMappedJoyBackend.sdlMaxAxes + displayMappedJoyBackend.sdlMaxButtons); i++)
+            {
+                highlightInfo.append({x: 0, y: 0, width: 0, height: 0, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source})
+            }
         }
     }
 

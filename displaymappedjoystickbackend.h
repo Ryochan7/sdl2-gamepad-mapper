@@ -11,6 +11,8 @@
 class DisplayMappedJoystickBackend : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(int sdlMaxButtons READ getSDLMaxButtons)
+    Q_PROPERTY(int sdlMaxAxes READ getSDLMaxAxes)
 
     struct ControllerAxisInfo
     {
@@ -31,12 +33,13 @@ public:
     Q_INVOKABLE void setActiveDevice(JoystickSDL* device);
     Q_INVOKABLE bool establishConnections();
     Q_INVOKABLE bool disconnectConnections();
+    int getSDLMaxButtons();
+    int getSDLMaxAxes();
 
     static const int EMPTY_TRACKING_NUM = -1;
     static const int TRACK_AXIS_THRESHOLD = 28000;
     static const int TRACK_AXIS_DEAD = 18000;
     static const int TRACK_AXIS_DIFF_THRESHOLD = 10000;
-    static const int MAX_NUMBER_BINDINGS = 25;
 
 private:
     JoystickSDL* joyDevice;
