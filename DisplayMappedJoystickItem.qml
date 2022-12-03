@@ -117,7 +117,7 @@ Rectangle {
             highlightInfo.append({x: 220, y: 0, width: privateData.buttonHighlight.width, height: privateData.buttonHighlight.height, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source});
 
             // Add empty entries for possible unknown axes
-            for (var j = highlightInfo.count; i < (displayMappedJoyBackend.sdlMaxAxes + displayMappedJoyBackend.sdlMaxButtons); i++)
+            for (var j = highlightInfo.count; j < (displayMappedJoyBackend.sdlMaxAxes + displayMappedJoyBackend.sdlMaxButtons); j++)
             {
                 highlightInfo.append({x: 0, y: 0, width: 0, height: 0, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source})
             }
