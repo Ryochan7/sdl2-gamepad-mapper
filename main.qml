@@ -470,13 +470,6 @@ Window {
                 selectByMouse: true
                 readOnly: true
                 wrapMode: TextEdit.WrapAnywhere
-
-                MouseArea
-                {
-                    anchors.fill: logTxtArea
-                    enabled: false
-                    cursorShape: Qt.IBeamCursor
-                }
             }
         }
 
