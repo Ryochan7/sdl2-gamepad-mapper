@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs
 
 import sdl2mappercomponents 1.0
 
@@ -15,8 +15,8 @@ Window {
 
     minimumWidth: 540
     minimumHeight: 600
-    maximumWidth: 540
-    maximumHeight: 600
+    //maximumWidth: 540
+    //maximumHeight: 600
 
     //flags: Qt.Dialog
 
@@ -41,8 +41,8 @@ Window {
             id: msgDialog
             text: msgDialogStrings.copyGUIDText
             title: msgDialogStrings.copyGUIDTitle
-            standardButtons: StandardButton.Close
-            icon: StandardIcon.Information
+            //standardButtons: StandardButton.Close
+            //icon: StandardIcon.Information
         }
     }
 
@@ -115,7 +115,7 @@ Window {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignRight
                         spacing: 20
-                        standardButtons: StandardButton.Yes | StandardButton.Cancel
+                        standardButtons: MessageDialog.Yes | MessageDialog.Cancel
                         onAccepted: {
                             var index = deviceCombo.currentIndex;
                             var joypad = backend.reader.joypadContainer.getJoystick(index);
@@ -152,8 +152,8 @@ Window {
         id: createMappingDialog
         text: "Create Game Controller Mapping?"
         title: "Create Game Controller Mapping?"
-        standardButtons: StandardButton.Yes | StandardButton.No
-        onYes: {
+        buttons: MessageDialog.Yes | MessageDialog.No
+        onAccepted: {
             actionButtonLayout.currentIndex = mappingActionRow.elementIndex;
             displayMappedItem.disableDisplay();
             //highlightImgLayout.currentIndex = mappingDisplayItem.elementIndex;
@@ -171,7 +171,7 @@ Window {
     {
         id: logger
 
-        onLogMessage: {
+        onLogMessage: function (message) {
             //console.log("LOGGER MESSAGE: " + message);
             //logTxtArea.text = logTxtArea.text.concat("\n" + message);
             logTxtArea.append(message);

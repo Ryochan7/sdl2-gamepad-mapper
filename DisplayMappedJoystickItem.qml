@@ -33,12 +33,12 @@ Rectangle {
     {
         id: displayMappedJoyBackend
 
-        onBindExecuted: {
+        onBindExecuted: function(bindIndex) {
             var element = privateData.highlightImgArray[bindIndex];
             element.visible = true;
         }
 
-        onBindReleased: {
+        onBindReleased: function(bindIndex) {
             var element = privateData.highlightImgArray[bindIndex];
             element.visible = false;
         }
@@ -294,7 +294,9 @@ Rectangle {
         {
             var item = highlightInfo.get(i);
             //console.log(item);
-            var currentHighlightImg = highlightImgComp.createObject(root, item);
+            //console.log(item.x);
+            var currentHighlightImg = highlightImgComp.createObject(root,
+                {x: item.x, y: item.y, width: item.width, height: item.height, source: item.source});
             //console.log(currentHighlightImg);
             privateData.highlightImgArray.push(currentHighlightImg);
         }

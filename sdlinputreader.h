@@ -3,12 +3,14 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QQmlEngine>
 
 #include "joystickcontainer.h"
 
 class SDLInputReader : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(JoystickContainer* joypadContainer READ getJoyContainer CONSTANT)
 public:
     explicit SDLInputReader(QObject *parent = nullptr);

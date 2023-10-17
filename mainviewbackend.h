@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QNetworkAccessManager>
+#include <QQmlEngine>
 
 #include "sdl2mapperbackend.h"
 #include "joystickcontainermodel.h"
@@ -10,6 +11,7 @@
 class MainViewBackend : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(SDL2MapperBackend* mapperBack MEMBER mapperBackend)
     Q_PROPERTY(bool hasSDLEnvVar MEMBER sdlGCEnvVar NOTIFY sdlGCEnvVarChanged)
     Q_PROPERTY(JoystickContainerModel* joyComboModel READ getJoyComboModel NOTIFY joyComboModelChanged)

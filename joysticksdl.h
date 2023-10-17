@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QList>
+#include <QQmlEngine>
 
 #include <SDL2/SDL_joystick.h>
 #include <SDL2/SDL_gamecontroller.h>
@@ -104,6 +105,7 @@ signals:
     void mappedNameChanged();
 };
 
-Q_DECLARE_METATYPE(JoystickSDL*)
+//Q_DECLARE_METATYPE(JoystickSDL*)
+QML_DECLARE_TYPE(JoystickSDL)
 
 #endif // JOYSTICKSDL_H

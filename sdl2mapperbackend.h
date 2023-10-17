@@ -3,12 +3,14 @@
 
 #include <QObject>
 #include <QThread>
+#include <QQmlEngine>
 
 #include "sdlinputreader.h"
 
 class SDL2MapperBackend : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(SDLInputReader* reader MEMBER inputReader CONSTANT)
 
 public:

@@ -278,7 +278,7 @@ Rectangle
     Connections
     {
         target: privateData
-        onCurrentHighlightChanged: {
+        function onCurrentHighlightChanged() {
             //calcListPosition();
         }
     }
