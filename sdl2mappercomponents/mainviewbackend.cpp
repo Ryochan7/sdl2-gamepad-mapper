@@ -347,3 +347,12 @@ void MainViewBackend::attemptReadLocalMappingFile()
         SDL_GameControllerAddMappingsFromFile(testMappingPath.toStdString().c_str());
     }
 }
+
+QString MainViewBackend::getLocalWrittenFileString()
+{
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QStringList tempList(appDataPath);
+    tempList.append("gamecontrollerdb.local.txt");
+    QString testMappingPath = tempList.join("/");
+    return testMappingPath;
+}

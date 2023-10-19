@@ -30,6 +30,7 @@ Window {
         property string copyGUIDTitle: qsTr("Copying GUID");
         property string copyMappingText: qsTr("Copying SDL Mapping string of \"%1\" to clipboard");
         property string copyMappingTitle: qsTr("Copying SDL Mapping string");
+        property string localGCMappingFileSaveText: qsTr("Saved mapping to file: %1");
     }
 
     Component
@@ -127,8 +128,14 @@ Window {
                                 var result = joypad.setMappingString(tempString);
                                 joypad.refreshGameController();
                                 var logMessage = qsTr("Mapping string: %1").arg(tempString);
-                                viewBackend.writeMappingString(tempString);
-                                logger.log(logMessage);
+                                var successWrite = viewBackend.writeMappingString(tempString);
+                                if (successWrite)
+                                {
+                                    logger.log(logMessage);
+                                    var localFileLoc = msgDialogStrings.localGCMappingFileSaveText.arg(viewBackend.localWrittenFileString);
+                                    logger.log(localFileLoc);
+                                }
+
                                 viewBackend.joyComboModel.refreshItem(index);
                             }
 
