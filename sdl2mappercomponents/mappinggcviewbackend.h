@@ -16,6 +16,8 @@ class MappingGCViewBackend : public QObject
     QML_ELEMENT
     Q_PROPERTY(QString cuckery MEMBER HIGH_CUCKERY CONSTANT)
     Q_PROPERTY(int currentMapIndex MEMBER mappingIndex)
+    Q_PROPERTY(int sdlMaxButtons READ getSDLMaxButtons)
+    Q_PROPERTY(int sdlMaxAxes READ getSDLMaxAxes)
 
     enum InputBindType
     {
@@ -122,6 +124,8 @@ public:
     Q_INVOKABLE QString generateSDLBindings();
     Q_INVOKABLE void resetMappings();
     Q_INVOKABLE void resetBinding(int index);
+    int getSDLMaxButtons();
+    int getSDLMaxAxes();
 
     static const QString HIGH_CUCKERY;
     static const int EMPTY_TRACKING_NUM = -1;

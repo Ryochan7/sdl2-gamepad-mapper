@@ -3,13 +3,15 @@ import QtQuick.Controls 2.12
 
 import sdl2mappercomponents 1.0
 
+/* Component used when creating a mapping. Displays background image and
+  control image for currently assignable binding */
 Rectangle
 {
     //height: 200
     //width: 50
     //color: "#FF00FF"
-    height: 186
-    width: 300
+    //height: 186
+    //width: 300
     //clip: true
 
     signal mappingFinished()
@@ -94,6 +96,13 @@ Rectangle
             // SDL_CONTROLLER_BUTTON_DPAD_RIGHT
             highlightInfo.append({x: 109, y: 127, width: privateData.buttonHighlight.width, height: privateData.buttonHighlight.height, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source});
 
+            // Add empty entries for possible unknown buttons
+            /*for (var i = highlightInfo.count; i < mappingGCBackend.sdlMaxButtons; i++)
+            {
+                highlightInfo.append({x: 0, y: 0, width: 0, height: 0, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source})
+            }
+            */
+
             // SDL_CONTROLLER_AXIS_LEFTX-
             highlightInfo.append({x: 15, y: 89, width: privateData.axisLeftHighlight.width, height: privateData.axisLeftHighlight.height, buttonType: privateData.axisXType, source: privateData.axisLeftHighlight.source});
             // SDL_CONTROLLER_AXIS_LEFTX+
@@ -115,6 +124,13 @@ Rectangle
             highlightInfo.append({x: 53, y: 0, width: privateData.buttonHighlight.width, height: privateData.buttonHighlight.height, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source});
             // SDL_CONTROLLER_AXIS_TRIGGERRIGHT
             highlightInfo.append({x: 220, y: 0, width: privateData.buttonHighlight.width, height: privateData.buttonHighlight.height, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source});
+
+            // Add empty entries for possible unknown axes
+            /*for (var j = highlightInfo.count; j < (mappingGCBackend.sdlMaxAxes + mappingGCBackend.sdlMaxButtons); j++)
+            {
+                highlightInfo.append({x: 0, y: 0, width: 0, height: 0, buttonType: privateData.buttonType, source: privateData.buttonHighlight.source})
+            }
+            */
         }
     }
 
@@ -122,6 +138,11 @@ Rectangle
     {
         id: backgroundXboxImg
         source: "/images/controllermap.png"
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
+
+        property int origWidth: 300;
+        property int origHeight: 186;
         //width: 300
         //height: 186
     }
@@ -136,11 +157,12 @@ Rectangle
         width: 0
         height: 0
         //fillMode: Image.PreserveAspectFit
+        fillMode: Image.PreserveAspectFit
         visible: mappingActive
 
         function establishLateBindings()
         {
-            highlightImg.x = Qt.binding(function()
+            /*highlightImg.x = Qt.binding(function()
             {
                return highlightInfo.get(privateData.currentHighlight).x;
             });
@@ -149,13 +171,14 @@ Rectangle
             {
                return highlightInfo.get(privateData.currentHighlight).y;
             });
+            */
 
             highlightImg.source = Qt.binding(function()
             {
                 return highlightInfo.get(privateData.currentHighlight).source;
             });
 
-            highlightImg.width = Qt.binding(function()
+            /*highlightImg.width = Qt.binding(function()
             {
                 return highlightInfo.get(privateData.currentHighlight).width;
             });
@@ -164,6 +187,7 @@ Rectangle
             {
                 return highlightInfo.get(privateData.currentHighlight).height;
             });
+            */
 
             /*highlightImg.rotation = Qt.binding(function()
             {
@@ -195,6 +219,15 @@ Rectangle
     function setHighlightButton(index)
     {
         privateData.currentHighlight = index;
+        var origInfo = highlightInfo.get(privateData.currentHighlight);
+        var scaleX = (backgroundXboxImg.paintedWidth / backgroundXboxImg.origWidth);
+        var scaleY = (backgroundXboxImg.paintedHeight / backgroundXboxImg.origHeight);
+
+        highlightImg.x = origInfo.x * scaleX + ((backgroundXboxImg.width - backgroundXboxImg.paintedWidth) / 2.0);
+        highlightImg.y = origInfo.y * scaleY + ((backgroundXboxImg.height - backgroundXboxImg.paintedHeight) / 2.0);
+        highlightImg.width = origInfo.width * scaleX;
+        highlightImg.height = origInfo.height * scaleY;
+        mappingActive = true;
     }
 
     function activeNextHighlightButton()
@@ -246,6 +279,8 @@ Rectangle
         mappingGCBackend.currentMapIndex = 0;
         mappingGCBackend.resetMappings();
         mappingGCBackend.beginTracking();
+
+        setHighlightButton(privateData.currentHighlight);
     }
 
     function endMapping()
@@ -298,5 +333,13 @@ Rectangle
 
     onMappingFinished: {
         endMapping();
+    }
+
+    onWidthChanged: function()
+    {
+        if (mappingActive)
+        {
+            setHighlightButton(privateData.currentHighlight);
+        }
     }
 }

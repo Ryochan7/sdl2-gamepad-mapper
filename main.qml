@@ -54,8 +54,9 @@ Window {
         {
             id: saveMapDialog
 
-            width: 600
+            width: parent.width - 100
             height: 180
+            anchors.centerIn: parent
 
             title: qsTr("Save Mapping?")
             contentItem: Item
@@ -237,8 +238,8 @@ Window {
         StackLayout
         {
             id: highlightImgLayout
-            Layout.fillHeight: false
-            Layout.fillWidth: false
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
 
             currentIndex: mappingDisplayItem.mappingActive ? mappingDisplayItem.elementIndex : displayMappedItem.elementIndex

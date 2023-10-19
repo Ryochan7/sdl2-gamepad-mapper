@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.3
 
 import sdl2mappercomponents 1.0
 
+/* Component used in main view to display a currently bound mapping. Displays background image and
+  control image for detected input controls */
 Rectangle {
 
     id: root
@@ -12,6 +14,8 @@ Rectangle {
     property bool bindDisplayActive: false
     property var joystick
     property QtObject logger
+
+    //color: "red"
 
     QtObject
     {
@@ -35,12 +39,21 @@ Rectangle {
 
         onBindExecuted: function(bindIndex) {
             var element = privateData.highlightImgArray[bindIndex];
+            var origInfo = highlightInfo.get(bindIndex);
+            var scaleX = (backgroundXboxImg.paintedWidth / backgroundXboxImg.origWidth);
+            var scaleY = (backgroundXboxImg.paintedHeight / backgroundXboxImg.origHeight);
+            element.x = origInfo.x * scaleX + ((backgroundXboxImg.width - backgroundXboxImg.paintedWidth) / 2.0);
+            element.y = origInfo.y * scaleY + ((backgroundXboxImg.height - backgroundXboxImg.paintedHeight) / 2.0);
+            element.width = origInfo.width * scaleX;
+            element.height = origInfo.height * scaleY;
             element.visible = true;
         }
 
         onBindReleased: function(bindIndex) {
             var element = privateData.highlightImgArray[bindIndex];
             element.visible = false;
+            element.x = 0;
+            element.y = 0;
         }
     }
 
@@ -130,6 +143,7 @@ Rectangle {
         Image
         {
             visible: false
+            fillMode: Image.PreserveAspectFit
         }
     }
 
@@ -137,6 +151,12 @@ Rectangle {
     {
         id: backgroundXboxImg
         source: "/images/controllermap.png"
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
+
+        property int origWidth: 300;
+        property int origHeight: 186;
+
         //width: 300
         //height: 186
     }
