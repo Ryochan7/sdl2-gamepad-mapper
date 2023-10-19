@@ -27,6 +27,7 @@ Rectangle {
         property var axisUpHighlight: {"source": "/images/up-arrow-small.png", "width": 29, "height": 40}
         property var axisDownHighlight: {"source": "/images/down-arrow-small.png", "width": 29, "height": 40}
         property var highlightImgArray: []
+        property var activeControlsSet: new Set()
 
         property int buttonType: 0;
         property int axisXType: 1;
@@ -38,6 +39,20 @@ Rectangle {
         id: displayMappedJoyBackend
 
         onBindExecuted: function(bindIndex) {
+            privateData.activeControlsSet.add(bindIndex)
+            showHighlightImage(bindIndex);
+        }
+
+        onBindReleased: function(bindIndex) {
+            var element = privateData.highlightImgArray[bindIndex];
+            element.visible = false;
+            element.x = 0;
+            element.y = 0;
+            privateData.activeControlsSet.delete(bindIndex);
+        }
+
+        function showHighlightImage(bindIndex)
+        {
             var element = privateData.highlightImgArray[bindIndex];
             var origInfo = highlightInfo.get(bindIndex);
             var scaleX = (backgroundXboxImg.paintedWidth / backgroundXboxImg.origWidth);
@@ -47,13 +62,6 @@ Rectangle {
             element.width = origInfo.width * scaleX;
             element.height = origInfo.height * scaleY;
             element.visible = true;
-        }
-
-        onBindReleased: function(bindIndex) {
-            var element = privateData.highlightImgArray[bindIndex];
-            element.visible = false;
-            element.x = 0;
-            element.y = 0;
         }
     }
 
@@ -305,6 +313,8 @@ Rectangle {
             var element = privateData.highlightImgArray[i];
             element.visible = false;
         }
+
+        privateData.activeControlsSet.clear();
     }
 
     Component.onCompleted: {
@@ -319,6 +329,28 @@ Rectangle {
                 {x: item.x, y: item.y, width: item.width, height: item.height, source: item.source});
             //console.log(currentHighlightImg);
             privateData.highlightImgArray.push(currentHighlightImg);
+        }
+    }
+
+    onWidthChanged: function()
+    {
+        if (joydisplayActive)
+        {
+            for (const key of privateData.activeControlsSet.keys())
+            {
+                displayMappedJoyBackend.showHighlightImage(key);
+            }
+        }
+    }
+
+    onHeightChanged: function()
+    {
+        if (joydisplayActive)
+        {
+            for (const key of privateData.activeControlsSet.keys())
+            {
+                displayMappedJoyBackend.showHighlightImage(key);
+            }
         }
     }
 }

@@ -342,4 +342,12 @@ Rectangle
             setHighlightButton(privateData.currentHighlight);
         }
     }
+
+    onHeightChanged: function()
+    {
+        if (mappingActive)
+        {
+            setHighlightButton(privateData.currentHighlight);
+        }
+    }
 }
