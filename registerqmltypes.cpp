@@ -2,12 +2,14 @@
 
 #include "registerqmltypes.h"
 
-#include "sdl2mapperbackend.h"
+/*#include "sdl2mapperbackend.h"
 #include "sdlinputreader.h"
 #include "mainviewbackend.h"
 #include "mappinggcviewbackend.h"
 #include "displaymappedjoystickbackend.h"
 #include "applogger.h"
+*/
+#include "joysticksdl.h"
 
 void RegisterQMLTypes::RegisterTypesForQML()
 {
