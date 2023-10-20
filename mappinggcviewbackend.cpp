@@ -440,6 +440,16 @@ void MappingGCViewBackend::deleteTrackedAxes()
     trackedAxesStates.clear();
 }
 
+int MappingGCViewBackend::getSDLMaxButtons()
+{
+    return SDL_CONTROLLER_BUTTON_MAX;
+}
+
+int MappingGCViewBackend::getSDLMaxAxes()
+{
+    return SDL_CONTROLLER_AXIS_MAX;
+}
+
 MappingGCViewBackend::~MappingGCViewBackend()
 {
     QListIterator<GCBinding*> iter(mappedBindings);

@@ -5,12 +5,14 @@
 #include <QHash>
 #include <QList>
 #include <QVariant>
+#include <QQmlEngine>
 
 #include "joysticksdl.h"
 
 class JoystickContainer : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(int numPads READ getNumberJoysticks NOTIFY numPadsChanged)
 public:
     explicit JoystickContainer(QObject *parent = nullptr);

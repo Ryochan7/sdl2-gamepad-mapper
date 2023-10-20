@@ -1,6 +1,6 @@
 QT += quick quickcontrols2 network
 
-CONFIG += c++11
+CONFIG += c++11 qmltypes
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -34,7 +34,10 @@ TRANSLATIONS += \
     sdl2-gamepad-mapper_en_US.ts
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+QML_IMPORT_PATH +=
+
+QML_IMPORT_NAME = sdl2mappercomponents
+QML_IMPORT_MAJOR_VERSION = 1
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =

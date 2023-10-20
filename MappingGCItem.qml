@@ -8,8 +8,8 @@ Rectangle
     //height: 200
     //width: 50
     //color: "#FF00FF"
-    height: 186
-    width: 300
+    //height: 186
+    //width: 300
     //clip: true
 
     signal mappingFinished()
@@ -122,6 +122,12 @@ Rectangle
     {
         id: backgroundXboxImg
         source: "/images/controllermap.png"
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
+
+        property int origWidth: 300;
+        property int origHeight: 186;
+
         //width: 300
         //height: 186
     }
@@ -136,11 +142,12 @@ Rectangle
         width: 0
         height: 0
         //fillMode: Image.PreserveAspectFit
+        fillMode: Image.PreserveAspectFit
         visible: mappingActive
 
         function establishLateBindings()
         {
-            highlightImg.x = Qt.binding(function()
+            /*highlightImg.x = Qt.binding(function()
             {
                return highlightInfo.get(privateData.currentHighlight).x;
             });
@@ -149,13 +156,14 @@ Rectangle
             {
                return highlightInfo.get(privateData.currentHighlight).y;
             });
+            */
 
             highlightImg.source = Qt.binding(function()
             {
                 return highlightInfo.get(privateData.currentHighlight).source;
             });
 
-            highlightImg.width = Qt.binding(function()
+            /*highlightImg.width = Qt.binding(function()
             {
                 return highlightInfo.get(privateData.currentHighlight).width;
             });
@@ -164,6 +172,7 @@ Rectangle
             {
                 return highlightInfo.get(privateData.currentHighlight).height;
             });
+            */
 
             /*highlightImg.rotation = Qt.binding(function()
             {
@@ -195,6 +204,15 @@ Rectangle
     function setHighlightButton(index)
     {
         privateData.currentHighlight = index;
+        var origInfo = highlightInfo.get(privateData.currentHighlight);
+        var scaleX = (backgroundXboxImg.paintedWidth / backgroundXboxImg.origWidth);
+        var scaleY = (backgroundXboxImg.paintedHeight / backgroundXboxImg.origHeight);
+
+        highlightImg.x = origInfo.x * scaleX + ((backgroundXboxImg.width - backgroundXboxImg.paintedWidth) / 2.0);
+        highlightImg.y = origInfo.y * scaleY + ((backgroundXboxImg.height - backgroundXboxImg.paintedHeight) / 2.0);
+        highlightImg.width = origInfo.width * scaleX;
+        highlightImg.height = origInfo.height * scaleY;
+        mappingActive = true;
     }
 
     function activeNextHighlightButton()
@@ -246,6 +264,8 @@ Rectangle
         mappingGCBackend.currentMapIndex = 0;
         mappingGCBackend.resetMappings();
         mappingGCBackend.beginTracking();
+
+        setHighlightButton(privateData.currentHighlight);
     }
 
     function endMapping()
@@ -278,7 +298,7 @@ Rectangle
     Connections
     {
         target: privateData
-        onCurrentHighlightChanged: {
+        function onCurrentHighlightChanged() {
             //calcListPosition();
         }
     }
@@ -298,5 +318,21 @@ Rectangle
 
     onMappingFinished: {
         endMapping();
+    }
+
+    onWidthChanged: function()
+    {
+        if (mappingActive)
+        {
+            setHighlightButton(privateData.currentHighlight);
+        }
+    }
+
+    onHeightChanged: function()
+    {
+        if (mappingActive)
+        {
+            setHighlightButton(privateData.currentHighlight);
+        }
     }
 }

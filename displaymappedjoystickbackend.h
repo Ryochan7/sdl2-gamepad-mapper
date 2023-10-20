@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QQmlEngine>
 
 #include <SDL2/SDL_gamecontroller.h>
 
@@ -11,6 +12,7 @@
 class DisplayMappedJoystickBackend : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(int sdlMaxButtons READ getSDLMaxButtons)
     Q_PROPERTY(int sdlMaxAxes READ getSDLMaxAxes)
 

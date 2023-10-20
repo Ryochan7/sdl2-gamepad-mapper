@@ -23,6 +23,7 @@ Rectangle {
         property var axisUpHighlight: {"source": "/images/up-arrow-small.png", "width": 29, "height": 40}
         property var axisDownHighlight: {"source": "/images/down-arrow-small.png", "width": 29, "height": 40}
         property var highlightImgArray: []
+        property var activeControlsSet: new Set()
 
         property int buttonType: 0;
         property int axisXType: 1;
@@ -33,14 +34,30 @@ Rectangle {
     {
         id: displayMappedJoyBackend
 
-        onBindExecuted: {
-            var element = privateData.highlightImgArray[bindIndex];
-            element.visible = true;
+        onBindExecuted: function(bindIndex) {
+            privateData.activeControlsSet.add(bindIndex)
+            showHighlightImage(bindIndex);
         }
 
-        onBindReleased: {
+        onBindReleased: function(bindIndex) {
             var element = privateData.highlightImgArray[bindIndex];
             element.visible = false;
+            element.x = 0;
+            element.y = 0;
+            privateData.activeControlsSet.delete(bindIndex);
+        }
+
+        function showHighlightImage(bindIndex)
+        {
+            var element = privateData.highlightImgArray[bindIndex];
+            var origInfo = highlightInfo.get(bindIndex);
+            var scaleX = (backgroundXboxImg.paintedWidth / backgroundXboxImg.origWidth);
+            var scaleY = (backgroundXboxImg.paintedHeight / backgroundXboxImg.origHeight);
+            element.x = origInfo.x * scaleX + ((backgroundXboxImg.width - backgroundXboxImg.paintedWidth) / 2.0);
+            element.y = origInfo.y * scaleY + ((backgroundXboxImg.height - backgroundXboxImg.paintedHeight) / 2.0);
+            element.width = origInfo.width * scaleX;
+            element.height = origInfo.height * scaleY;
+            element.visible = true;
         }
     }
 
@@ -130,6 +147,7 @@ Rectangle {
         Image
         {
             visible: false
+            fillMode: Image.PreserveAspectFit
         }
     }
 
@@ -137,8 +155,13 @@ Rectangle {
     {
         id: backgroundXboxImg
         source: "/images/controllermap.png"
+        anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
         //width: 300
         //height: 186
+
+        property int origWidth: 300;
+        property int origHeight: 186;
     }
 
     /*Image
@@ -285,6 +308,8 @@ Rectangle {
             var element = privateData.highlightImgArray[i];
             element.visible = false;
         }
+
+        privateData.activeControlsSet.clear();
     }
 
     Component.onCompleted: {
@@ -297,6 +322,28 @@ Rectangle {
             var currentHighlightImg = highlightImgComp.createObject(root, item);
             //console.log(currentHighlightImg);
             privateData.highlightImgArray.push(currentHighlightImg);
+        }
+    }
+
+    onWidthChanged: function()
+    {
+        if (joydisplayActive)
+        {
+            for (const key of privateData.activeControlsSet.keys())
+            {
+                displayMappedJoyBackend.showHighlightImage(key);
+            }
+        }
+    }
+
+    onHeightChanged: function()
+    {
+        if (joydisplayActive)
+        {
+            for (const key of privateData.activeControlsSet.keys())
+            {
+                displayMappedJoyBackend.showHighlightImage(key);
+            }
         }
     }
 }

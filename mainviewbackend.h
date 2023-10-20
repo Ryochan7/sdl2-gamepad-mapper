@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QNetworkAccessManager>
+#include <QQmlEngine>
 
 #include "sdl2mapperbackend.h"
 #include "joystickcontainermodel.h"
@@ -10,11 +11,13 @@
 class MainViewBackend : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(SDL2MapperBackend* mapperBack MEMBER mapperBackend)
     Q_PROPERTY(bool hasSDLEnvVar MEMBER sdlGCEnvVar NOTIFY sdlGCEnvVarChanged)
     Q_PROPERTY(JoystickContainerModel* joyComboModel READ getJoyComboModel NOTIFY joyComboModelChanged)
     Q_PROPERTY(QString progVersion MEMBER PROGRAM_VERSION CONSTANT)
     Q_PROPERTY(QString errorString MEMBER m_errorString CONSTANT)
+    Q_PROPERTY(QString localWrittenFileString READ getLocalWrittenFileString)
 
 public:
     explicit MainViewBackend(QObject *parent = nullptr);
@@ -33,6 +36,7 @@ public:
     Q_INVOKABLE void requestLatestMappingInfo();
     Q_INVOKABLE void requestLatestMappingFile();
     Q_INVOKABLE void loadExistingMappingFiles();
+    QString getLocalWrittenFileString();
 
     static QString PROGRAM_VERSION;
 

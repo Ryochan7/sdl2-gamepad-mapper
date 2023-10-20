@@ -91,6 +91,7 @@ void MainViewBackend::createMappingEnvvar(QString mapping)
     QSettings settings("HKEY_CURRENT_USER\\Environment", QSettings::NativeFormat);
     settings.setValue(SDL_ENVVAR_NAME, mapping);
     settings.sync();
+    Q_UNUSED(result);
     //qDebug() << "ENVVAR: " << result;
     checkForEnvvar();
     emit sdlGCEnvVarChanged();
@@ -144,7 +145,7 @@ bool MainViewBackend::writeMappingString(QString mapping)
     }
 
     QTextStream stream(&tempFile);
-    stream << mapping << endl;
+    stream << mapping << Qt::endl;
     stream.flush();
 
     tempFile.close();
@@ -301,7 +302,7 @@ void MainViewBackend::remoteMappingCheckReplyFinished()
         tempFile.open(QIODevice::WriteOnly | QIODevice::Text);
 
         QTextStream stream(&tempFile);
-        stream << khantent << endl;
+        stream << khantent << Qt::endl;
         stream.flush();
 
         tempFile.close();
@@ -345,4 +346,13 @@ void MainViewBackend::attemptReadLocalMappingFile()
     {
         SDL_GameControllerAddMappingsFromFile(testMappingPath.toStdString().c_str());
     }
+}
+
+QString MainViewBackend::getLocalWrittenFileString()
+{
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QStringList tempList(appDataPath);
+    tempList.append("gamecontrollerdb.local.txt");
+    QString testMappingPath = tempList.join("/");
+    return testMappingPath;
 }

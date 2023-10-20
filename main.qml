@@ -15,8 +15,8 @@ Window {
 
     minimumWidth: 540
     minimumHeight: 600
-    maximumWidth: 540
-    maximumHeight: 600
+    //maximumWidth: 540
+    //maximumHeight: 600
 
     //flags: Qt.Dialog
 
@@ -30,6 +30,7 @@ Window {
         property string copyGUIDTitle: qsTr("Copying GUID");
         property string copyMappingText: qsTr("Copying SDL Mapping string of \"%1\" to clipboard");
         property string copyMappingTitle: qsTr("Copying SDL Mapping string");
+        property string localGCMappingFileSaveText: qsTr("Saved mapping to file: %1");
     }
 
     Component
@@ -126,7 +127,14 @@ Window {
                                 var result = joypad.setMappingString(tempString);
                                 joypad.refreshGameController();
                                 var logMessage = qsTr("Mapping string: %1").arg(tempString);
-                                viewBackend.writeMappingString(tempString);
+                                var successWrite = viewBackend.writeMappingString(tempString);
+                                if (successWrite)
+                                {
+                                    logger.log(logMessage);
+                                    var localFileLoc = msgDialogStrings.localGCMappingFileSaveText.arg(viewBackend.localWrittenFileString);
+                                    logger.log(localFileLoc);
+                                }
+
                                 logger.log(logMessage);
                                 viewBackend.joyComboModel.refreshItem(index);
                             }
@@ -171,7 +179,7 @@ Window {
     {
         id: logger
 
-        onLogMessage: {
+        onLogMessage: function(message) {
             //console.log("LOGGER MESSAGE: " + message);
             //logTxtArea.text = logTxtArea.text.concat("\n" + message);
             logTxtArea.append(message);
@@ -237,8 +245,8 @@ Window {
         StackLayout
         {
             id: highlightImgLayout
-            Layout.fillHeight: false
-            Layout.fillWidth: false
+            Layout.fillHeight: true
+            Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
 
             currentIndex: mappingDisplayItem.mappingActive ? mappingDisplayItem.elementIndex : displayMappedItem.elementIndex
