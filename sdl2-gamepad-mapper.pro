@@ -75,3 +75,28 @@ DISTFILES += \
     images/left-arrow-small.png \
     images/right-arrow-small.png \
     images/up-arrow-small.png
+
+
+
+win32 {
+  #for(var, $$list($$enumerate_vars())) {
+  #    message($$var)
+  #    message($$eval($$var))
+  #}
+
+  TEMPLIBPATH = $$[QT_INSTALL_LIBS]
+  QTPATH = $$dirname(TEMPLIBPATH)
+
+  #message($$[QT_INSTALL_LIBS])
+  #message($$QTPATH)
+
+  LIBS += -L$${QTPATH}../../../Tools/OpenSSL/Win_x64/lib/ -llibssl
+
+  INCLUDEPATH += $${QTPATH}../../../Tools/OpenSSL/Win_x64/include
+  DEPENDPATH += $${QTPATH}../../../Tools/OpenSSL/Win_x64/include
+
+  LIBS += -L$${QTPATH}../../../Tools/OpenSSL/Win_x64/lib/ -llibcrypto
+
+  #INCLUDEPATH += $${QTPATH}../../../Tools/OpenSSL/Win_x64/include
+  #DEPENDPATH += $${QTPATH}../../../Tools/OpenSSL/Win_x64/include
+}
