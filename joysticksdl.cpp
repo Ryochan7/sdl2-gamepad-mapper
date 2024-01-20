@@ -50,7 +50,7 @@ void JoystickSDL::parseSDLDetails()
         buttonStates.append(SDL_JoystickGetButton(sdlJoy, i));
     }
 
-    for (int i = 0; i < SDL_JoystickNumButtons(sdlJoy); i++)
+    for (int i = 0; i < SDL_JoystickNumAxes(sdlJoy); i++)
     {
         AxisInfo* tempInfo = new AxisInfo();
         tempInfo->axisValue = SDL_JoystickGetAxis(sdlJoy, i);
@@ -59,7 +59,7 @@ void JoystickSDL::parseSDLDetails()
         //isTrigger.append(false);
     }
 
-    for (int i = 0; i < SDL_JoystickNumButtons(sdlJoy); i++)
+    for (int i = 0; i < SDL_JoystickNumHats(sdlJoy); i++)
     {
         hatStates.append(SDL_JoystickGetHat(sdlJoy, i));
     }
@@ -92,7 +92,12 @@ void JoystickSDL::refreshInitialStateData()
     }
     */
 
-    for (int i = 0; i < SDL_JoystickNumButtons(sdlJoy); i++)
+    for (int i = 0; i < SDL_JoystickNumAxes(sdlJoy); i++)
+    {
+        axisStates[i]->axisValue = SDL_JoystickGetAxis(sdlJoy, i);
+    }
+
+    for (int i = 0; i < SDL_JoystickNumHats(sdlJoy); i++)
     {
         hatStates[i] = SDL_JoystickGetHat(sdlJoy, i);
     }
