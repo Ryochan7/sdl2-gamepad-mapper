@@ -293,7 +293,7 @@ QString MappingGCViewBackend::generateSDLBindings()
                 case SDL_CONTROLLER_BIND_AXIS_RIGHTX_NEGATIVE:
                 case SDL_CONTROLLER_BIND_AXIS_RIGHTY_NEGATIVE:
                 {
-                    bool skipNext = skipAdjacentAxisMapping(temp->index);
+                    bool skipNext = skipAdjacentAxisMapping(temp->index, temp->outputBind);
                     if (skipNext)
                     {
                          // Move iter to next binding here. Next run of while loop will skip it
@@ -371,12 +371,12 @@ QString MappingGCViewBackend::generateSDLBindings()
     return result;
 }
 
-bool MappingGCViewBackend::skipAdjacentAxisMapping(int index)
+bool MappingGCViewBackend::skipAdjacentAxisMapping(int index, int outBindIdx)
 {
     bool result = false;
 
-    if (index >= SDL_CONTROLLER_BIND_AXIS_LEFTX_NEGATIVE &&
-        index <= SDL_CONTROLLER_BIND_AXIS_RIGHTY_NEGATIVE)
+    if (outBindIdx >= SDL_CONTROLLER_BIND_AXIS_LEFTX_NEGATIVE &&
+        outBindIdx <= SDL_CONTROLLER_BIND_AXIS_RIGHTY_NEGATIVE)
     {
         GCBinding *current = mappedBindings.at(index);
         GCBinding *next = mappedBindings.at(index+1);

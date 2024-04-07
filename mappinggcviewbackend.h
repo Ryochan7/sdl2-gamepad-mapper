@@ -136,7 +136,7 @@ public:
 
 private:
     void createBindingData();
-    bool skipAdjacentAxisMapping(int index);
+    bool skipAdjacentAxisMapping(int index, int outBindIdx);
     int rangeValue(int current);
     void refreshTrackedAxes();
     void deleteTrackedAxes();
