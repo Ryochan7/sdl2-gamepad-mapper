@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>DisplayMappedJoystickItem.qml</file>
+        <file>MappingGCItem.qml</file>
+        <file>MappingGCScripter.js</file>
+    </qresource>
+</RCC>

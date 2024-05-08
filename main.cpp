@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
         QQuickStyle::setStyle("Fusion");
     }
 
-    RegisterQMLTypes();
+    //RegisterQMLTypes();
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

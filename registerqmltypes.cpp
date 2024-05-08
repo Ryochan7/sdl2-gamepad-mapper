@@ -9,7 +9,7 @@
 #include "displaymappedjoystickbackend.h"
 #include "applogger.h"
 */
-#include "joysticksdl.h"
+#include "sdl2mappercomponents/joysticksdl.h"
 
 void RegisterQMLTypes::RegisterTypesForQML()
 {

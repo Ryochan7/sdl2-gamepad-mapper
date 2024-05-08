@@ -14,21 +14,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        applogger.cpp \
-        apploggersingleton.cpp \
-        displaymappedjoystickbackend.cpp \
-        joystickcontainer.cpp \
-        joystickcontainermodel.cpp \
-        joysticksdl.cpp \
+        sdl2mappercomponents/applogger.cpp \
+        sdl2mappercomponents/apploggersingleton.cpp \
+        sdl2mappercomponents/displaymappedjoystickbackend.cpp \
+        sdl2mappercomponents/joystickcontainer.cpp \
+        sdl2mappercomponents/joystickcontainermodel.cpp \
+        sdl2mappercomponents/joysticksdl.cpp \
         main.cpp \
-        mainviewbackend.cpp \
-        mappinggcviewbackend.cpp \
+        sdl2mappercomponents/mainviewbackend.cpp \
+        sdl2mappercomponents/mappinggcviewbackend.cpp \
         registerqmltypes.cpp \
-        sdl2mapperbackend.cpp \
-        sdlinputreader.cpp
+        sdl2mappercomponents/sdl2mapperbackend.cpp \
+        sdl2mappercomponents/sdlinputreader.cpp
 
 RESOURCES += qml.qrc \
-    resources.qrc
+    resources.qrc \
+    sdl2mappercomponents/sdl2mappercomponents.qrc
 
 TRANSLATIONS += \
     sdl2-gamepad-mapper_en_US.ts
@@ -42,6 +43,7 @@ QML_IMPORT_MAJOR_VERSION = 1
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
 
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 #else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -49,23 +51,27 @@ else: unix:!android: target.path = /usr/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    applogger.h \
-    apploggersingleton.h \
-    displaymappedjoystickbackend.h \
-    joystickcontainer.h \
-    joystickcontainermodel.h \
-    joysticksdl.h \
-    mainviewbackend.h \
-    mappinggcviewbackend.h \
+    sdl2mappercomponents/applogger.h \
+    sdl2mappercomponents/apploggersingleton.h \
+    sdl2mappercomponents/displaymappedjoystickbackend.h \
+    sdl2mappercomponents/joystickcontainer.h \
+    sdl2mappercomponents/joystickcontainermodel.h \
+    sdl2mappercomponents/joysticksdl.h \
+    sdl2mappercomponents/mainviewbackend.h \
+    sdl2mappercomponents/mappinggcviewbackend.h \
     registerqmltypes.h \
-    sdl2mapperbackend.h \
-    sdlinputreader.h
+    sdl2mappercomponents/sdl2mapperbackend.h \
+    sdl2mappercomponents/sdlinputreader.h
+
 
 win32: LIBS += -L$$PWD/SDL2/lib/ -llibSDL2.dll
 else: LIBS += -lSDL2
 
 win32: INCLUDEPATH += $$PWD/SDL2/include
 win32: DEPENDPATH += $$PWD/SDL2/include
+
+# Need to use INCLUDEPATH for auto-generated class registration code to find headers
+INCLUDEPATH += sdl2mappercomponents
 
 DISTFILES += \
     images/axis.png \
