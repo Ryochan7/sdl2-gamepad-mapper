@@ -167,9 +167,6 @@ Rectangle {
 
         //width: 300
         //height: 186
-
-        property int origWidth: 300;
-        property int origHeight: 186;
     }
 
     /*Image
