@@ -21,5 +21,5 @@ void RegisterQMLTypes::RegisterTypesForQML()
     qmlRegisterType<DisplayMappedJoystickBackend>("sdl2mappercomponents", 1, 0, "DisplayMappedJoystickBackend");
     qmlRegisterType<AppLogger>("sdl2mappercomponents", 1, 0, "AppLogger");
     */
-    qRegisterMetaType<JoystickSDL*>("JoystickSDL*");
+    //qRegisterMetaType<JoystickSDL*>("JoystickSDL*");
 }

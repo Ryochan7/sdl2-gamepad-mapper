@@ -12,13 +12,14 @@
 #include <QStandardPaths>
 #include <QSettings>
 
-#include "registerqmltypes.h"
+//#include "registerqmltypes.h"
 
 
-void RegisterQMLTypes()
+/*void RegisterQMLTypes()
 {
     RegisterQMLTypes::RegisterTypesForQML();
 }
+*/
 
 int main(int argc, char *argv[])
 {

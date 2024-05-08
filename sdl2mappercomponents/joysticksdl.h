@@ -13,6 +13,7 @@
 class JoystickSDL : public QObject
 {
     Q_OBJECT
+    QML_ANONYMOUS
     Q_PROPERTY(QString GUID MEMBER sdlGUID CONSTANT)
     Q_PROPERTY(QString gameContMapping READ getMappingString)
     Q_PROPERTY(QString gameContDevName READ getDeviceName CONSTANT)
@@ -106,6 +107,6 @@ signals:
 };
 
 //Q_DECLARE_METATYPE(JoystickSDL*)
-QML_DECLARE_TYPE(JoystickSDL)
+//QML_DECLARE_TYPE(JoystickSDL)
 
 #endif // JOYSTICKSDL_H
