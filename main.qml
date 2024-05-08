@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
-import QtQuick.Dialogs
+import QtQuick.Dialogs 1.3
 
 import sdl2mappercomponents 1.0
 
@@ -57,7 +57,6 @@ Window {
 
             width: parent.width - 100
             height: 180
-            anchors.centerIn: parent
 
             title: qsTr("Save Mapping?")
             contentItem: Item
@@ -160,7 +159,7 @@ Window {
         id: createMappingDialog
         text: "Create Game Controller Mapping?"
         title: "Create Game Controller Mapping?"
-        buttons: MessageDialog.Yes | MessageDialog.No
+        standardButtons: MessageDialog.Yes | MessageDialog.No
         onAccepted: {
             actionButtonLayout.currentIndex = mappingActionRow.elementIndex;
             displayMappedItem.disableDisplay();
