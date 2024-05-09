@@ -6,9 +6,29 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-if [ -z "$QTBUNDLEDIR" ]; then
-  echo "Need to give directory for pre-built Qt version being used (\$QTBUNDLEDIR)."
-  exit 1
+USE_DOCKER=${USE_DOCKER:-""}
+QTBUNDLEDIR_EMPTY=${QTBUNDLEDIR:-""}
+
+CheckQtBundleDir()
+{
+    if [ -z "$QTBUNDLEDIR" ]; then
+      echo "Need to give directory for pre-built Qt version being used (\$QTBUNDLEDIR)."
+      exit 1
+    fi
+}
+
+QtBundleDirAssetCopy()
+{
+    mkdir -p AppImage/usr/qml
+    cp -r "${QTBUNDLEDIR}/qml/QtQml" AppImage/usr/qml
+    cp -r "${QTBUNDLEDIR}/qml/QtQuick" AppImage/usr/qml
+    cp -r "${QTBUNDLEDIR}/qml/QtWayland" AppImage/usr/qml
+    cp "${QTBUNDLEDIR}/qml/builtins.qmltypes" AppImage/usr/qml
+    cp "${QTBUNDLEDIR}/qml/jsroot.qmltypes" AppImage/usr/qml
+}
+
+if [ -z "$USE_DOCKER" ]; then
+  CheckQtBundleDir
 fi
 
 # Change dir to script dir
@@ -34,13 +54,10 @@ cp sdl2-gamepad-mapper.png AppImage/usr/icons/hicolor/512x512/apps
 cp sdl2-gamepad-mapper.desktop sdl2-gamepad-mapper.png \
   AppImage
 
-# Need to copy needed QML files for appimage here
-mkdir -p AppImage/usr/qml
-cp -r "${QTBUNDLEDIR}/qml/QtQml" AppImage/usr/qml
-cp -r "${QTBUNDLEDIR}/qml/QtQuick" AppImage/usr/qml
-cp -r "${QTBUNDLEDIR}/qml/QtWayland" AppImage/usr/qml
-cp "${QTBUNDLEDIR}/qml/builtins.qmltypes" AppImage/usr/qml
-cp "${QTBUNDLEDIR}/qml/jsroot.qmltypes" AppImage/usr/qml
+if [ -n "$QTBUNDLEDIR" ]; then
+    # Need to copy needed QML files for appimage here
+    QtBundleDirAssetCopy
+fi
 
 # Change dir to AppImage root dir
 #cd AppImage
