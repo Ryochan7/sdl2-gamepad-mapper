@@ -9,17 +9,18 @@
 FROM fedora:35
 
 # Install base
-RUN dnf -y install gcc gcc-c++ git qt5-qtbase qt5-qtbase-devel qt5-qtdeclarative qt5-qtdeclarative-devel qt5-qtquickcontrols2 qt5-qtquickcontrols2-devel qt5-qtquickcontrols qt5-qttranslations qt5-linguist SDL2-devel fuse-libs file
+RUN dnf -y install gcc gcc-c++ git qt6-qtbase qt6-qtbase-devel qt6-qtdeclarative qt6-qtdeclarative-devel qt6-qttranslations qt6-linguist SDL2-devel fuse-libs file
 
 # Copy required files
 RUN mkdir app
 COPY appimagetool-x86_64.AppImage /usr/local/bin
-COPY linuxdeployqt-continuous-x86_64.AppImage /usr/local/bin
+COPY linuxdeploy-x86_64.AppImage /usr/local/bin
+COPY linuxdeploy-plugin-qt-x86_64.AppImage /usr/local/bin
 ADD sdl2-gamepad-mapper app/sdl2-gamepad-mapper
 ADD buildscript.sh app
 
 # Set working dir
 WORKDIR app
 # Make symlink for qmake
-RUN ln -sf /usr/bin/qmake-qt5 /usr/bin/qmake
+RUN ln -sf /usr/bin/qmake6 /usr/bin/qmake
 #ENTRYPOINT /app/buildscript.sh
