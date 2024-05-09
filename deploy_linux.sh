@@ -7,7 +7,7 @@
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 if [ -z "$QTBUNDLEDIR" ]; then
-  echo "Need to give directory for pre-built Qt version being used ($QTBUNDLEDIR)."
+  echo "Need to give directory for pre-built Qt version being used (\$QTBUNDLEDIR)."
   exit 1
 fi
 
