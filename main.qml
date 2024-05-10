@@ -67,6 +67,7 @@ Window {
 
             width: parent.width - 100
             height: 180
+            anchors.centerIn: parent
 
             title: qsTr("Save Mapping?")
             contentItem: Item
