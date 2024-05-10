@@ -25,7 +25,7 @@
 #include "joysticksdl.h"
 
 static const char* SDL_ENVVAR_NAME = "SDL_GAMECONTROLLERCONFIG";
-QString MainViewBackend::PROGRAM_VERSION = "0.0.7";
+QString MainViewBackend::PROGRAM_VERSION = "0.0.8";
 
 static const char* upstreamGameControllerDBUrl ="https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt";
 static const char* upstreamGameControllerAPICommitCheck = "https://api.github.com/repos/gabomdq/SDL_GameControllerDB/commits?path=gamecontrollerdb.txt&page=1&per_page=1";
