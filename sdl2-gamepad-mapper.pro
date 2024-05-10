@@ -23,7 +23,6 @@ SOURCES += \
         main.cpp \
         sdl2mappercomponents/mainviewbackend.cpp \
         sdl2mappercomponents/mappinggcviewbackend.cpp \
-        registerqmltypes.cpp \
         sdl2mappercomponents/sdl2mapperbackend.cpp \
         sdl2mappercomponents/sdlinputreader.cpp
 
@@ -59,7 +58,6 @@ HEADERS += \
     sdl2mappercomponents/joysticksdl.h \
     sdl2mappercomponents/mainviewbackend.h \
     sdl2mappercomponents/mappinggcviewbackend.h \
-    registerqmltypes.h \
     sdl2mappercomponents/sdl2mapperbackend.h \
     sdl2mappercomponents/sdlinputreader.h
 
