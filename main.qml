@@ -33,7 +33,7 @@ Window {
         property string localGCMappingFileSaveText: qsTr("Saved mapping to file: %1");
     }
 
-    Component
+    /*Component
     {
         id: msgDialogComp
 
@@ -45,6 +45,16 @@ Window {
             //standardButtons: StandardButton.Close
             //icon: StandardIcon.Information
         }
+    }
+    */
+
+    MessageDialog
+    {
+        id: msgDialog
+        text: msgDialogStrings.copyGUIDText
+        title: msgDialogStrings.copyGUIDTitle
+        //standardButtons: StandardButton.Close
+        //icon: StandardIcon.Information
     }
 
     Component
@@ -329,8 +339,9 @@ Window {
                         if (joypad !== null)
                         {
                             var guid = backend.reader.joypadContainer.getJoystick(index).GUID;
-                            var msgDialog = msgDialogComp.createObject(rootWindow);
+                            //var msgDialog = msgDialogComp.createObject(rootWindow);
                             msgDialog.text = msgDialogStrings.copyGUIDText.arg(joypad.gameContDevName);
+                            msgDialog.title = msgDialogStrings.copyGUIDTitle;
                             msgDialog.open();
                             viewBackend.copyGUIDToClipboard(guid);
                             //logger.log(msgDialogStrings.copyGUIDText.arg(joypad.gameContDevName));
@@ -366,7 +377,7 @@ Window {
 
                         if (temp !== "")
                         {
-                            var msgDialog = msgDialogComp.createObject(rootWindow);
+                            //var msgDialog = msgDialogComp.createObject(rootWindow);
                             msgDialog.text = msgDialogStrings.copyMappingText.arg(joypad.gameContDevName);
                             msgDialog.title = msgDialogStrings.copyMappingTitle;
                             msgDialog.open();
