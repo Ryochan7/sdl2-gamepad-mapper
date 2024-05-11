@@ -1,12 +1,13 @@
-# Requires downloading appimagetool-x86_64.AppImage and
-# linuxdeployqt-continuous-x86_64.AppImage prior.
+# Requires downloading appimagetool-x86_64.AppImage,
+# linuxdeploy-x86_64.AppImage, and
+# linuxdeploy-plugin-qt-x86_64.AppImage prior.
 # Placed here for reference. Cannot build Docker image
 # from this directory.
 #
 # Create host volume to expose final AppImage to host system
 
-# Using Fedora 35 as base system
-FROM fedora:35
+# Using Fedora 36 as base system
+FROM fedora:36
 
 # Install base
 RUN dnf -y install gcc gcc-c++ git qt6-qtbase qt6-qtbase-devel qt6-qtdeclarative qt6-qtdeclarative-devel qt6-qttranslations qt6-linguist SDL2-devel fuse-libs file
