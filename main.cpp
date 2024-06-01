@@ -42,6 +42,8 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
+
+    engine.addImportPath(":/");
     engine.load(url);
 
     return app.exec();
