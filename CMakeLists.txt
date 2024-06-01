@@ -4,7 +4,7 @@ project(sdl2-gamepad-mapper VERSION 0.0.8 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.3 REQUIRED COMPONENTS Quick QuickControls2 Network Gui)
+find_package(Qt6 6.4 REQUIRED COMPONENTS Quick QuickControls2 Network Gui)
 
 qt_standard_project_setup()
 
