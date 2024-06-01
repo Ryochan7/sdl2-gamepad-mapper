@@ -21,6 +21,12 @@ qt_add_executable(sdl2-gamepad-mapper
     sdl2-gamepad-mapper_en_US.ts
 )
 
+qt_add_resources(sdl2-gamepad-mapper "qml"
+    PREFIX "/"
+    FILES
+        main.qml
+)
+
 qt_add_resources(sdl2-gamepad-mapper "resources"
     PREFIX "/"
     FILES
@@ -58,7 +64,6 @@ qt_add_qml_module(sdl2-gamepad-mapper
         sdl2mappercomponents/sdlinputreader.cpp
         sdl2mappercomponents/sdlinputreader.h
     QML_FILES
-        main.qml
         sdl2mappercomponents/DisplayMappedJoystickItem.qml
         sdl2mappercomponents/MappingGCItem.qml
 )
