@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(sdl2-gamepad-mapper VERSION 0.0.8 LANGUAGES CXX)
+project(sdl2-gamepad-mapper VERSION 0.0.9 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
