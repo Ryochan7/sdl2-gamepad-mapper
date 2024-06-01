@@ -14,9 +14,7 @@
 
 int main(int argc, char *argv[])
 {
-    //QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
-    //QCoreApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+    //QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 
     QGuiApplication app(argc, argv);
     app.setOrganizationName("AutismPowered");
@@ -37,12 +35,13 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
-                     &app, [url](QObject *obj, const QUrl &objUrl) {
-        if (!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
+    const QUrl url(QStringLiteral("qrc:/sdl2mappercomponents/main.qml"));
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreationFailed,
+        &app,
+        []() { QCoreApplication::exit(-1); },
+        Qt::QueuedConnection);
     engine.load(url);
 
     return app.exec();
