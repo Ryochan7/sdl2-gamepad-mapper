@@ -38,7 +38,7 @@ cd $SCRIPT_DIR
 # Build app in dedicated build dir
 mkdir build
 cd build
-qmake ../ CONFIG+=release
+cmake -DCMAKE_BUILD_TYPE=Release -S ../ -B ./
 make
 
 # Change dir back to main source dir
