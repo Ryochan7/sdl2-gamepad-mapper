@@ -6,8 +6,8 @@
 #
 # Create host volume to expose final AppImage to host system
 
-# Using Fedora 36 as base system
-FROM fedora:36
+# Using Fedora 37 as base system
+FROM fedora:37
 
 # Install base
 RUN dnf -y install gcc gcc-c++ git qt6-qtbase qt6-qtbase-devel qt6-qtdeclarative qt6-qtdeclarative-devel qt6-qttranslations qt6-linguist SDL2-devel fuse-libs file
