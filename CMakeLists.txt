@@ -5,6 +5,7 @@ project(sdl2-gamepad-mapper VERSION 0.0.9 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.4 REQUIRED COMPONENTS Quick QuickControls2 Network Gui)
+#find_package(Qt6 6.4 REQUIRED COMPONENTS Quick QuickControls2 Network Gui LinguistTools)
 
 qt_standard_project_setup()
 
@@ -18,7 +19,6 @@ endif()
 
 qt_add_executable(sdl2-gamepad-mapper
     main.cpp
-    sdl2-gamepad-mapper_en_US.ts
 )
 
 qt_add_resources(sdl2-gamepad-mapper "qml"
@@ -106,6 +106,15 @@ else()
         PUBLIC SDL2
     )
 endif()
+
+#qt_add_lupdate(sdl2-gamepad-mapper
+#    TS_FILES sdl2-gamepad-mapper_en_US.ts
+#)
+
+#qt_add_lrelease(sdl2-gamepad-mapper
+#    TS_FILES
+#        sdl2-gamepad-mapper_en_US.ts
+#)
 
 include(GNUInstallDirs)
 install(TARGETS sdl2-gamepad-mapper
